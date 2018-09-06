@@ -9,10 +9,17 @@
 			<span class="e">e</span>
 		</h1>
 
-		<button v-if="loggedIn" @click="login">Logout</button>
-		<button v-else @click="login">Login</button>
+		<template v-if="loggedIn">
+			<button @click="login">Logout</button>
+			<button @click="go">Continue as {{username}}</button>
 
-		<button v-if="loggedIn" @click="go">Continue as {{username}}</button>
+			Use <b>Shift+Mouse</b> for navigation.<br>
+			Use <b>Click</b> to put pixel.<br>
+			Go build your favorite thing.
+		</template>
+		<template v-else>
+			<button @click="login">Login</button>
+		</template>
 	</div>
 </template>
 
