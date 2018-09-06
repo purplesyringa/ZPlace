@@ -13,7 +13,7 @@
   },
   "permission_rules": {
    ".*": {
-    "files_allowed": "data.json",
+    "files_allowed": "data.txt",
     "max_size": 100000
    }
   },
