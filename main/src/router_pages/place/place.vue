@@ -112,6 +112,13 @@
 			}
 
 			zeroPage.on("peerReceive", this.onPeerReceive);
+
+			const permissions = this.$store.state.siteInfo.settings.permissions;
+			if(permissions.indexOf("NOSANDBOX") > -1) {
+				// Hide all notifications
+				const notifications = top.document.querySelector(".notifications");
+				notifications.style.display = "none";
+			}
 		},
 		destroyed() {
 			window.removeEventListener("resize", this.onResize);
