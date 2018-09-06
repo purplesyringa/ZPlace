@@ -1,0 +1,13 @@
+{
+	"filter": ".*",
+	"size_limit": 1024,
+	"cert_signers": {
+		"zeroid.bit": ["1iD5ZQJMNXu43w1qLB8sfdHVKppVMduGz"],
+		"kaffie.bit": ["1KH5BdNnqxh2KRWMMT8wUXzUgz4vVQ4S8p"],
+		"cryptoid.bit": ["18143WPue3rQykNaopx5KJKzYmaYhCjqhv"],
+		"peak.id": ["1PEAKf9wJLTEEFAsQpLeLioWfY1f8pvFhD"],
+		"zeroverse.bit": ["1HPgDoReCFtE9qy71hnp55ksBVvV1gHJLQ"],
+		"kxoid.bit": ["12F5SvxoPR128aiudte78h8pY7mobroG6V"]
+	},
+	"signed_only": true
+}

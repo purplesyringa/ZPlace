@@ -1,0 +1,28 @@
+{
+ "address": "1GitLiXB6t5r8vuU2zC6a8GYj9ME6HMQ4t",
+ "address_index": 80074647,
+ "background-color": "#FFF",
+ "clone_root": "template-new",
+ "cloned_from": "1HeLLo4uzjaLetFx6NH3PMwFP3qbRbTf3D",
+ "description": "ZPlace",
+ "files": {},
+ "ignore": "data/.*|merged-.*",
+ "includes": {
+  "data/users/content.json": {
+   "signers": [],
+   "signers_required": 1
+  }
+ },
+ "inner_path": "content.json",
+ "modified": 1516199309,
+ "postmessage_nonce_security": true,
+ "signers_sign": "HGi2ieQAyGsfO7LeAVgbnd2tJAqB15an3uspuYTlJVSMUCEkQjs2wzhEY9sW3z7LTfS24oyDRVEnQ7KdzADbGRI=",
+ "signs": {
+  "1GitLiXB6t5r8vuU2zC6a8GYj9ME6HMQ4t": "HD0BbTfRCkSPtx5+4Zi36tjZPe597FLk8h/0okPA7tsDQdxThEwGOCAMOOIhAui9AFqy1yDhNg4+9JwPO5wrMFc="
+ },
+ "signs_required": 1,
+ "title": "ZPlace",
+ "translate": ["js/all.js"],
+ "viewport": "width=device-width, initial-scale=1",
+ "zeronet_version": "0.6.0"
+}

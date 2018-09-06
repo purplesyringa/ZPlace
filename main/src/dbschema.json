@@ -1,0 +1,41 @@
+{
+	"db_name": "ZPlace",
+	"db_file": "data/ZPlace.db",
+	"version": 2,
+	"maps": {
+		"users/.+/content.json": {
+			"to_json_table": ["cert_user_id"],
+			"file_name": "data.json"
+		},
+		"users/.+/data.json": {
+			"to_table": ["chat"],
+			"to_json_table": ["username", "ipmode", "hasAvatar", "avatarExt"]
+		}
+	},
+	"tables": {
+		"json": {
+			"cols": [
+				["json_id", "INTEGER PRIMARY KEY AUTOINCREMENT"],
+				["directory", "TEXT"],
+				["file_name", "TEXT"],
+				["cert_user_id", "TEXT"],
+				["username", "TEXT"],
+				["ipmode", "TEXT"],
+				["hasAvatar", "INTEGER"],
+				["avatarExt", "TEXT"]
+			],
+			"indexes": ["CREATE UNIQUE INDEX path ON json(directory, file_name)"],
+			"schema_changed": 4
+		},
+
+		"chat": {
+			"cols": [
+				["text", "TEXT"],
+				["date", "INTEGER"],
+				["json_id", "INTEGER"]
+			],
+			"indexes": [],
+			"schema_changed": 1
+		}
+	}
+}
