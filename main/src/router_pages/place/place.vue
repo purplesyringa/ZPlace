@@ -266,6 +266,8 @@
 
 					// Sign & publish
 					await zeroPage.publish(`data/users/${authAddress}/content.json`);
+
+					this.askNoSandbox();
 				}
 			},
 			onResize() {
@@ -304,6 +306,40 @@
 
 			chooseColor(i) {
 				this.currentColor = i;
+			},
+
+			async askNoSandbox() {
+				let localStorage = await zeroPage.cmd("wrapperGetLocalStorage");
+				if(!localStorage) {
+					localStorage = {};
+				}
+
+				if(localStorage.dismissNoSandbox) {
+					// Dismissed
+					return;
+				}
+
+				const result = await zeroPage.confirm(
+					"<b>You can remove those \"Published...\" messages by<br>" +
+					"adding NOSANDBOX permission. No harm, I promise.</b>",
+					["Okay", "Never ask me again"]
+				);
+
+				// Never ask again in both cases
+				localStorage.dismissNoSandbox = true;
+				await zeroPage.cmd("wrapperSetLocalStorage", localStorage);
+
+				if(result === 1) {
+					// Okay
+					zeroPage.cmd("wrapperPermissionAdd", ["NOSANDBOX"]);
+
+					const onSetSiteInfo = siteInfo => {
+						if(siteInfo.settings.permissions.indexOf("NOSANDBOX") > -1) {
+							top.location.href = `/${siteInfo.address}/?/place`;
+						}
+					};
+					this.$eventBus.$on("setSiteInfo", onSetSiteInfo);
+				}
 			}
 		}
 	};
