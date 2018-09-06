@@ -1,10 +1,5 @@
 import "./sass/main.sass";
 
-// For ChessBoard
-import jquery from "jquery";
-window.$ = jquery;
-window.jQuery = jquery;
-
 import Vue from "vue/dist/vue.min.js";
 
 import AsyncComputed from "vue-async-computed";
@@ -12,12 +7,6 @@ Vue.use(AsyncComputed);
 
 import Icon from "vue-awesome/components/Icon.vue";
 Vue.component("icon", Icon);
-
-import GameChat from "./vue_components/game-chat/game-chat.vue";
-Vue.component("game-chat", GameChat);
-
-import UserAvatar from "./vue_components/user-avatar/user-avatar.vue";
-Vue.component("user-avatar", UserAvatar);
 
 Vue.prototype.$eventBus = new Vue();
 
