@@ -268,6 +268,7 @@
 					} catch(e) {
 						data = [];
 					}
+					data = data.filter(part => !part.startsWith(`${x}/${y}/`));
 					data.push(str);
 					await zeroFS.writeFile(`data/users/${authAddress}/data.txt`, data.join(";"));
 
