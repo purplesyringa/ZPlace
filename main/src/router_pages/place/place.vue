@@ -127,8 +127,7 @@
 
 		methods: {
 			async loadPixelsOf(address) {
-				let data = await zeroFS.readFile(`data/users/${address}/data.txt`);
-				data = data.split(";");
+				let data = await this.parseDataFile(address);
 
 				for(const pixel of data) {
 					let [x, y, color, lastUpdate] = pixel.split("/");
@@ -262,15 +261,24 @@
 
 					// Save to file
 					const authAddress = this.$store.state.siteInfo.auth_address;
-					let data;
-					try {
-						data = (await zeroFS.readFile(`data/users/${authAddress}/data.txt`)).split(";");
-					} catch(e) {
-						data = [];
-					}
+					let data = await this.parseDataFile(authAddress);
+
+					// Change
 					data = data.filter(part => !part.startsWith(`${x}/${y}/`));
 					data.push(str);
-					await zeroFS.writeFile(`data/users/${authAddress}/data.txt`, data.join(";"));
+
+					// Write in binary format
+					const result = Buffer.alloc(data.length * 13 + 1);
+					result[0] = "!".charCodeAt(0);
+					for(let i = 0; i < data.length; i++) {
+						const [x, y, date, color] = data[i].split("/");
+						result.writeUInt16BE(parseInt(x), i * 13 + 1);
+						result.writeUInt16BE(parseInt(y), i * 13 + 3);
+						result.writeUInt32BE(Math.floor(parseInt(date) / Math.pow(2, 32)), i * 13 + 5);
+						result.writeUInt32BE(parseInt(date) & (Math.pow(2, 32) - 1), i * 13 + 9);
+						result[i * 13 + 13] = parseInt(color);
+					}
+					await zeroFS.writeFile(`data/users/${authAddress}/data.txt`, result, "arraybuffer");
 
 					// Sign & publish
 					await zeroPage.publish(`data/users/${authAddress}/content.json`);
@@ -347,6 +355,39 @@
 						}
 					};
 					this.$eventBus.$on("setSiteInfo", onSetSiteInfo);
+				}
+			},
+
+			async parseDataFile(authAddress) {
+				let dataFile;
+				try {
+					dataFile = Buffer.from(await zeroFS.readFile(`data/users/${authAddress}/data.txt`, "arraybuffer"));
+				} catch(e) {
+					return [];
+				}
+
+				if(dataFile[0] === "!".charCodeAt(0)) {
+					// Binary format
+					// 2 bytes -- X
+					// 2 bytes -- Y
+					// 8 bytes -- date
+					// 1 byte -- color
+					let data = [];
+					for(let i = 1; i < dataFile.length - 1; i += 13) {
+						const x = dataFile.readUInt16BE(i);
+						const y = dataFile.readUInt16BE(i + 2);
+						const date = (
+							(dataFile.readUInt32BE(i + 4) * Math.pow(2, 3)) |
+							dataFile.readUInt32BE(i + 8)
+						);
+						const color = dataFile[i + 12];
+
+						data.push(`${x}/${y}/${date}/${color}`);
+					}
+					return data;
+				} else {
+					// Old (text) format
+					return dataFile.toString("utf8").split(";");
 				}
 			}
 		}
